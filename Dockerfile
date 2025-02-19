@@ -11,6 +11,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Устанавливаем Symfony CLI
 RUN curl -sS https://get.symfony.com/cli/installer | bash && \
     mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
+    
 
 
 # Указываем рабочую директорию
