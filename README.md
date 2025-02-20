@@ -6,6 +6,11 @@
 git clone https://github.com/Zem-Alex/TODOlist.git
 ```
 
+Перейдите в директорию проекта:
+```shell
+cd TODOlist
+```
+
 Чтобы создать и запустить контейнеры в docker введите следующую команду:
 ```shell
 docker compose up -d
