@@ -4,4 +4,14 @@
 
 return [
     '_preview_error' => [['code', '_format'], ['_controller' => 'error_controller::preview', '_format' => 'html'], ['code' => '\\d+'], [['variable', '.', '[^/]++', '_format', true], ['variable', '/', '\\d+', 'code', true], ['text', '/_error']], [], [], []],
+    'app_task_gettasks' => [[], ['_controller' => 'App\\Controller\\TaskController::getTasksAction'], [], [['text', '/api/tasks']], [], [], []],
+    'app_task_gettask' => [['id'], ['_controller' => 'App\\Controller\\TaskController::getTaskAction'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/tasks']], [], [], []],
+    'app_task_createtask' => [[], ['_controller' => 'App\\Controller\\TaskController::createTaskAction'], [], [['text', '/api/tasks']], [], [], []],
+    'app_task_updatetask' => [['id'], ['_controller' => 'App\\Controller\\TaskController::updateTaskAction'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/tasks']], [], [], []],
+    'app_task_deletetask' => [['id'], ['_controller' => 'App\\Controller\\TaskController::deleteTaskAction'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/tasks']], [], [], []],
+    'App\Controller\TaskController::getTasksAction' => [[], ['_controller' => 'App\\Controller\\TaskController::getTasksAction'], [], [['text', '/api/tasks']], [], [], []],
+    'App\Controller\TaskController::getTaskAction' => [['id'], ['_controller' => 'App\\Controller\\TaskController::getTaskAction'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/tasks']], [], [], []],
+    'App\Controller\TaskController::createTaskAction' => [[], ['_controller' => 'App\\Controller\\TaskController::createTaskAction'], [], [['text', '/api/tasks']], [], [], []],
+    'App\Controller\TaskController::updateTaskAction' => [['id'], ['_controller' => 'App\\Controller\\TaskController::updateTaskAction'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/tasks']], [], [], []],
+    'App\Controller\TaskController::deleteTaskAction' => [['id'], ['_controller' => 'App\\Controller\\TaskController::deleteTaskAction'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/tasks']], [], [], []],
 ];

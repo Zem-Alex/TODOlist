@@ -2,36 +2,42 @@
 
 namespace App\Controller;
 
-use App\Entity\Task;
-use App\Repository\TaskRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Service\TaskService;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
 
 final class TaskController extends AbstractController
 {
+    private $taskService;
+    private $serializer;
+
+    public function __construct(TaskService $taskService, SerializerInterface $serializer)
+    {
+        $this->taskService = $taskService;
+        $this->serializer = $serializer;
+    }
+
     // Получение всех задач
     #[Route('/api/tasks', methods: ['GET'])]
-    public function getTasks(TaskRepository $taskRepository): JsonResponse
+    public function getTasksAction(): Response
     {
-        $tasks = $taskRepository->findAll();
+        $tasks = $this->taskService->getTasks();
 
         if (!$tasks) {
             return $this->json(['message' => 'Tasks not found'], 404);
         }
 
-        // Можно добавить сериализацию, если нужно
         return $this->json($tasks);
     }
 
     // Получение задачи по ID
     #[Route('/api/tasks/{id}', methods: ['GET'])]
-    public function getTask(int $id, TaskRepository $taskRepository): JsonResponse
+    public function getTaskAction(int $id): Response
     {
-        $task = $taskRepository->find($id);
+        $task = $this->taskService->getTaskById($id);
 
         if (!$task) {
             return $this->json(['message' => 'Task not found'], 404);
@@ -42,57 +48,37 @@ final class TaskController extends AbstractController
 
     // Создание новой задачи
     #[Route('/api/tasks', methods: ['POST'])]
-    public function createTask(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    public function createTaskAction(Request $request): Response
     {
-        $data = json_decode($request->getContent(), true); // Получаем данные из тела запроса
+        $data = json_decode($request->getContent(), true);
+        $task = $this->taskService->createTask($data);
 
-        $task = new Task();
-        $task->setTitle($data['title']);
-        $task->setDescription($data['description']);
-        $task->setStatus('new');
-        $task->setCreatedAt(new \DateTime());
-        $task->setUpdatedAt(new \DateTime());
-
-        $entityManager->persist($task);
-        $entityManager->flush();
-
-        return $this->json($task, 201); // Возвращаем созданную задачу с кодом 201
+        return $this->json($task, 201);
     }
 
     // Обновление задачи по ID
     #[Route('/api/tasks/{id}', methods: ['PUT'])]
-    public function updateTask(int $id, Request $request, TaskRepository $taskRepository, EntityManagerInterface $entityManager): JsonResponse
+    public function updateTaskAction(int $id, Request $request): Response
     {
-        $task = $taskRepository->find($id);
+        $data = json_decode($request->getContent(), true);
+        $task = $this->taskService->updateTask($id, $data);
 
         if (!$task) {
             return $this->json(['message' => 'Task not found'], 404);
         }
-
-        $data = json_decode($request->getContent(), true); // Получаем данные из тела запроса
-
-        $task->setTitle($data['title']);
-        $task->setDescription($data['description']);
-        $task->setStatus($data['status']);
-        $task->setUpdatedAt(new \DateTime());
-
-        $entityManager->flush();
 
         return $this->json($task);
     }
 
     // Удаление задачи по ID
     #[Route('/api/tasks/{id}', methods: ['DELETE'])]
-    public function deleteTask(int $id, TaskRepository $taskRepository, EntityManagerInterface $entityManager): JsonResponse
+    public function deleteTaskAction(int $id): Response
     {
-        $task = $taskRepository->find($id);
+        $task = $this->taskService->deleteTask($id);
 
         if (!$task) {
             return $this->json(['message' => 'Task not found'], 404);
         }
-
-        $entityManager->remove($task);
-        $entityManager->flush();
 
         return $this->json(['message' => 'Task deleted']);
     }

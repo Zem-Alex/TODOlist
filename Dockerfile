@@ -12,7 +12,9 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN curl -sS https://get.symfony.com/cli/installer | bash && \
     mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
     
-RUN composer require symfony/serializer
+#RUN composer require symfony/serializer
+
+#RUN composer install --no-dev --optimize-autoloader
 
 # Указываем рабочую директорию
 WORKDIR /var/www/html
