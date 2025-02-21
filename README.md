@@ -18,6 +18,8 @@ docker compose up -d
 
 Создайте миграцию для создания таблицы tasks в базе данных:
 ```shell
+sudo docker exec -it php php bin/console doctrine:migrations:diff
+
 docker exec -it php php bin/console doctrine:migrations:migrate
 ```
 
