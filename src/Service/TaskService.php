@@ -6,6 +6,7 @@ use App\Entity\Task;
 use App\Repository\TaskRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
+// Сервис для работы с задачами
 class TaskService
 {
     private $taskRepository;
@@ -17,16 +18,19 @@ class TaskService
         $this->entityManager = $entityManager;
     }
 
+    // Возвращает список всех задач
     public function getTasks()
     {
         return $this->taskRepository->findAll();
     }
 
+    // Возвращает задачу по её ID
     public function getTaskById($id)
     {
         return $this->taskRepository->find($id);
     }
 
+    // Создает новую задачу и сохраняет её в базе данных
     public function createTask($data)
     {
         $task = new Task();
@@ -42,6 +46,7 @@ class TaskService
         return $task;
     }
 
+    // Обновляет существующую задачу по её ID
     public function updateTask($id, $data)
     {
         $task = $this->taskRepository->find($id);
@@ -57,6 +62,7 @@ class TaskService
         return $task;
     }
 
+    // Удаляет задачу по её ID
     public function deleteTask($id)
     {
         $task = $this->taskRepository->find($id);
